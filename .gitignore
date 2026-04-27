@@ -1,0 +1,63 @@
+# ---------- Python ----------
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+build/
+dist/
+wheels/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Tooling caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# uv
+# (uv.lock IS committed — do not ignore it)
+
+# ---------- Secrets / env ----------
+.env
+.env.*
+!.env.example
+
+# ---------- Claude Code ----------
+.claude/settings.local.json
+
+# ---------- ML / data artifacts ----------
+# Uncomment / extend once weights and sample docs land.
+# *.pt
+# *.onnx
+# *.bin
+# data/raw/
+# data/samples/
+
+# ---------- Frontend (placeholder; refine when framework is chosen) ----------
+node_modules/
+.next/
+.nuxt/
+out/
+.svelte-kit/
+*.local
+
+# ---------- IDE / editor ----------
+.idea/
+.vscode/
+*.swp
+*~
+
+# ---------- OS ----------
+.DS_Store
+Thumbs.db
+
+# ---------- Logs ----------
+*.log
+logs/
