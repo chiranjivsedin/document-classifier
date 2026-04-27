@@ -2,9 +2,13 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Product context
+
+Requirements and domain notes live in [`docs/requirements.md`](./docs/requirements.md). Read it before reasoning about feature scope, behavior, or trade-offs. Update it in the same PR as any feature work that changes scope — don't let docs drift from code.
+
 ## Status
 
-Backend scaffolding is in place; source files are still empty stubs. `frontend/` and `docs/` are empty (framework not yet chosen). Re-run `/init` after real code lands so this file can document concrete behavior.
+Backend scaffolding is in place; source files are still empty stubs. `frontend/` is empty (React confirmed; meta-framework TBD). Re-run `/init` after real code lands so this file can document concrete behavior.
 
 ## Backend (`backend/`)
 
@@ -50,9 +54,9 @@ input doc → ocr.py → detector.py → extractor.py → classifier.py → resu
 ```
 
 - **`ocr.py`** — text extraction from raster/PDF input.
-- **`detector.py`** — region/object detection (layout, tables, signatures, etc.).
+- **`detector.py`** — originally scaffolded for layout/region detection. The current spec only needs "image-PDF vs text-PDF" routing, so this module's role is open (rename / fold into `pipeline.py` / keep). See `docs/requirements.md`.
 - **`extractor.py`** — pulls structured fields from detected regions + OCR output.
-- **`classifier.py`** — final document-type label.
+- **`classifier.py`** — final document-type label. **v1 uses hosted Gemini; v2 swaps to a fine-tuned Gemma SLM.** Keep the public interface stable so the swap is a drop-in, not a rewrite.
 - **`pipeline.py`** — composes the above; the route in `api/routes.py` should call `pipeline`, not the individual stages directly.
 
 This is the intended shape based on filenames; treat as a guide until the modules have content.
@@ -63,8 +67,8 @@ This is the intended shape based on filenames; treat as a guide until the module
 
 ## Frontend (`frontend/`)
 
-Empty. Framework not yet chosen.
+React. Specific meta-framework (Next.js / Vite / Remix / CRA) still TBD — see `docs/requirements.md`.
 
 ## Docs (`docs/`)
 
-Empty.
+- [`requirements.md`](./docs/requirements.md) — product/domain requirements (preliminary, evolving).
