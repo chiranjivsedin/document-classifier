@@ -8,7 +8,7 @@ Requirements and domain notes live in [`docs/requirements.md`](./docs/requiremen
 
 ## Status
 
-Backend scaffolding is in place; source files are still empty stubs. `frontend/` is empty (React confirmed; meta-framework TBD). Re-run `/init` after real code lands so this file can document concrete behavior.
+v1 backend is implemented and tested on `feat/local-gemma-classifier`. `POST /classify` is live, backed by Ollama + `gemma3:4b` with a discrete RapidOCR stage. `frontend/` is empty (React confirmed; meta-framework TBD).
 
 ## Backend (`backend/`)
 
@@ -45,21 +45,23 @@ backend/
     conftest.py
 ```
 
-### Pipeline architecture (intent)
+### Pipeline architecture
 
 `services/pipeline.py` orchestrates the document-AI flow:
 
 ```
-input doc → ocr.py → detector.py → extractor.py → classifier.py → result
+input doc → pdf_router.py → ocr.py (image route only) → classifier.py → result
 ```
 
-- **`ocr.py`** — text extraction from raster/PDF input.
-- **`detector.py`** — originally scaffolded for layout/region detection. The current spec only needs "image-PDF vs text-PDF" routing, so this module's role is open (rename / fold into `pipeline.py` / keep). See `docs/requirements.md`.
-- **`extractor.py`** — pulls structured fields from detected regions + OCR output.
-- **`classifier.py`** — final document-type label. **v1 uses hosted Gemini; v2 swaps to a fine-tuned Gemma SLM.** Keep the public interface stable so the swap is a drop-in, not a rewrite.
-- **`pipeline.py`** — composes the above; the route in `api/routes.py` should call `pipeline`, not the individual stages directly.
+- **`pdf_router.py`** — routes uploads to `"text"` or `"image"` path. Text PDFs: PyMuPDF extracts embedded text directly. Image PDFs / raster inputs: goes to OCR.
+- **`ocr.py`** — `OCREngine` Protocol + `RapidOCREngine` (v1 default, `rapidocr-onnxruntime`). Swap engine by adding a sibling class and one branch in `core/deps.py`.
+- **`classifier.py`** — `Classifier` Protocol + `OllamaGemmaClassifier` (v1, Ollama + `gemma3:4b`). v2 fine-tuned variant is a drop-in via the same Protocol.
+- **`pipeline.py`** — composes the above; the route in `api/routes.py` calls `pipeline.process()`, not stages directly.
+- **`core/deps.py`** — factory that builds the `Pipeline` from `Settings`; used as a FastAPI dependency (`get_pipeline`).
 
-This is the intended shape based on filenames; treat as a guide until the modules have content.
+### API
+
+- `POST /classify` — `multipart/form-data`, field `file` (PDF, PNG, JPEG). Returns `{predicted_class, confidence, reason, route, ocr_used}`.
 
 ### Naming convention worth preserving
 
