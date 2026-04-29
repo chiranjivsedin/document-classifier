@@ -3,3 +3,4 @@
 {"file": "fixtures/id_proof_01.pdf", "expected_class": "id_proof", "notes": "generated fixture — PAN card style"}
 {"file": "fixtures/report_01.pdf", "expected_class": "report", "notes": "generated fixture — quarterly performance report"}
 {"file": "fixtures/other_01.pdf", "expected_class": "other", "notes": "generated fixture — meeting notes"}
+{"file": "fixtures/sample-invoice.pdf", "expected_class": "invoice", "notes": "sample invoice"}
