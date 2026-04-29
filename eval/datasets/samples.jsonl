@@ -1,5 +1,5 @@
-{"file": "datasets/fixtures/invoice_01.pdf", "expected_class": "invoice", "notes": "generated fixture — typical invoice layout"}
-{"file": "datasets/fixtures/contract_01.pdf", "expected_class": "contract", "notes": "generated fixture — service agreement"}
-{"file": "datasets/fixtures/id_proof_01.pdf", "expected_class": "id_proof", "notes": "generated fixture — PAN card style"}
-{"file": "datasets/fixtures/report_01.pdf", "expected_class": "report", "notes": "generated fixture — quarterly performance report"}
-{"file": "datasets/fixtures/other_01.pdf", "expected_class": "other", "notes": "generated fixture — meeting notes"}
+{"file": "fixtures/invoice_01.pdf", "expected_class": "invoice", "notes": "generated fixture — typical invoice layout"}
+{"file": "fixtures/contract_01.pdf", "expected_class": "contract", "notes": "generated fixture — service agreement"}
+{"file": "fixtures/id_proof_01.pdf", "expected_class": "id_proof", "notes": "generated fixture — PAN card style"}
+{"file": "fixtures/report_01.pdf", "expected_class": "report", "notes": "generated fixture — quarterly performance report"}
+{"file": "fixtures/other_01.pdf", "expected_class": "other", "notes": "generated fixture — meeting notes"}
