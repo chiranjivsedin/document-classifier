@@ -5,7 +5,7 @@ from typing import Protocol
 
 from ollama import AsyncClient
 
-from backend.app.core.prompt import DOCUMENT_CLASSIFIER_PROMPT
+from app.core.prompt import DOCUMENT_CLASSIFIER_PROMPT
 
 
 class ClassifierError(Exception):
