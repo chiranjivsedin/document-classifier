@@ -5,6 +5,8 @@ from typing import Protocol
 
 from ollama import AsyncClient
 
+from backend.app.core.prompt import DOCUMENT_CLASSIFIER_PROMPT
+
 
 class ClassifierError(Exception):
     """Raised when the classifier cannot produce a result."""
@@ -27,21 +29,6 @@ class Classifier(Protocol):
     ) -> ClassificationResult: ...
 
 
-PROMPT_TEMPLATE = """\
-You are a document-classification model. Classify the document below into ONE of these categories: {categories}.
-
-Respond ONLY with a single JSON object of the form:
-{{"class": "<{categories_pipe}>", "confidence": <float 0..1>, "reason": "<short reason>"}}
-
-The text was extracted via the "{source_route}" route.
-
-Document text:
----
-{text}
----
-"""
-
-
 class OllamaGemmaClassifier:
     def __init__(self, host: str, model: str, categories: list[str]) -> None:
         self._client = AsyncClient(host=host)
@@ -51,7 +38,7 @@ class OllamaGemmaClassifier:
     async def classify(
         self, text: str, *, source_route: str
     ) -> ClassificationResult:
-        prompt = PROMPT_TEMPLATE.format(
+        prompt = DOCUMENT_CLASSIFIER_PROMPT.format(
             categories=", ".join(self._categories),
             categories_pipe=" | ".join(self._categories),
             source_route=source_route,
