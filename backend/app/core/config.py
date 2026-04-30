@@ -13,6 +13,8 @@ class Settings(BaseSettings):
         "contract",
         "id_proof",
         "report",
+        "purchase_order",
+        "shipping_order",
         "other",
     ]
 
