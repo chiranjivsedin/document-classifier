@@ -11,6 +11,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
+  const [elapsedMs, setElapsedMs] = useState(null);
 
   const handleFileSelection = (selectedFile) => {
     const validTypes = ['application/pdf', 'image/jpeg', 'image/png'];
@@ -30,9 +31,12 @@ function App() {
     setLoading(true);
     setError(null);
     setResult(null);
+    setElapsedMs(null);
+    const startTime = Date.now();
 
     try {
       const data = await classifyDocument(file);
+      setElapsedMs(Date.now() - startTime);
       setResult(data);
     } catch (err) {
       console.error(err);
@@ -70,7 +74,7 @@ function App() {
         )}
 
         {result && !loading && (
-          <ClassificationResult result={result} />
+          <ClassificationResult result={result} elapsedMs={elapsedMs} />
         )}
       </main>
     </div>

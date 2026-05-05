@@ -1,6 +1,11 @@
 import { formatCategory } from '../utils/formatters';
 
-const ClassificationResult = ({ result }) => {
+const formatElapsed = (ms) => {
+  if (ms == null) return null;
+  return ms >= 1000 ? `${(ms / 1000).toFixed(1)}s` : `${ms}ms`;
+};
+
+const ClassificationResult = ({ result, elapsedMs }) => {
   return (
     <div className="bg-slate-800/70 backdrop-blur-xl border border-white/10 rounded-2xl shadow-md mt-8 animate-slide-up">
       <div className="border-b border-white/10 p-6 flex justify-between items-center">
@@ -43,6 +48,14 @@ const ClassificationResult = ({ result }) => {
             </svg>
             OCR Used: {result.ocr_used ? 'Yes' : 'No'}
           </div>
+          {elapsedMs != null && (
+            <div className="flex items-center gap-2">
+              <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Time Taken: {formatElapsed(elapsedMs)}
+            </div>
+          )}
         </div>
       </div>
     </div>
