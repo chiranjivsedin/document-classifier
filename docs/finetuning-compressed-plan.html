@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fine-Tuning — 1.5 Week Compressed Plan</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f4f6f9;
+      color: #1a1a2e;
+      line-height: 1.7;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 60%, #0c4a6e 100%);
+      color: #fff;
+      padding: 52px 40px 44px;
+    }
+    .hero .label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #7dd3fc;
+      margin-bottom: 12px;
+    }
+    .hero h1 { font-size: 30px; font-weight: 700; margin-bottom: 10px; }
+    .hero p  { font-size: 15px; color: #94a3b8; max-width: 580px; }
+    .meta    { display: flex; gap: 24px; margin-top: 24px; flex-wrap: wrap; }
+    .meta span { font-size: 13px; color: #64748b; }
+    .meta strong { color: #cbd5e1; }
+
+    /* constraint pills */
+    .constraints {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    .pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 13px;
+      color: #e2e8f0;
+    }
+
+    .container { max-width: 960px; margin: 0 auto; padding: 48px 32px; }
+
+    /* timeline strip */
+    .timeline-strip {
+      background: #fff;
+      border-radius: 12px;
+      padding: 28px 36px;
+      margin-bottom: 32px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+    .timeline-strip h3 {
+      font-size: 12px;
+      font-weight: 700;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+    }
+    .strip-days {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 6px;
+    }
+    .strip-day {
+      text-align: center;
+    }
+    .strip-dot {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      margin: 0 auto 6px;
+    }
+    .s1 { background: #ede9fe; color: #7c3aed; }
+    .s2 { background: #dbeafe; color: #1d4ed8; }
+    .s3 { background: #dbeafe; color: #1d4ed8; }
+    .s4 { background: #dcfce7; color: #15803d; }
+    .s5 { background: #dcfce7; color: #15803d; }
+    .s6 { background: #fef9c3; color: #a16207; }
+    .s7 { background: #fef9c3; color: #a16207; }
+    .s8 { background: #ffedd5; color: #c2410c; }
+    .s9 { background: #ffedd5; color: #c2410c; }
+    .s10 { background: #ffedd5; color: #c2410c; }
+    .strip-label { font-size: 10px; color: #94a3b8; }
+
+    /* day card */
+    .day-card {
+      background: #fff;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+      overflow: hidden;
+    }
+    .day-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 28px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .day-num {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+    .d1  { background: #ede9fe; color: #7c3aed; }
+    .d2  { background: #dbeafe; color: #1d4ed8; }
+    .d3  { background: #dbeafe; color: #1d4ed8; }
+    .d4  { background: #dcfce7; color: #15803d; }
+    .d5  { background: #dcfce7; color: #15803d; }
+    .d67 { background: #fef9c3; color: #a16207; }
+    .d810{ background: #ffedd5; color: #c2410c; }
+
+    .day-header-text h2 { font-size: 16px; font-weight: 700; color: #0f172a; }
+    .day-header-text p  { font-size: 13px; color: #64748b; margin: 0; }
+
+    .day-body { padding: 24px 28px; }
+
+    /* half day blocks */
+    .half-days { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .half {
+      background: #f8fafc;
+      border-radius: 10px;
+      padding: 16px 18px;
+      border: 1px solid #e2e8f0;
+    }
+    .half h4 {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #94a3b8;
+      margin-bottom: 10px;
+    }
+    .half ul { list-style: none; }
+    .half ul li {
+      font-size: 13px;
+      color: #334155;
+      padding: 4px 0;
+      border-bottom: 1px solid #f1f5f9;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+    .half ul li:last-child { border-bottom: none; }
+    .half ul li::before { content: '→'; color: #94a3b8; flex-shrink: 0; font-size: 12px; margin-top: 2px; }
+
+    /* full day block */
+    .full-day {
+      background: #f8fafc;
+      border-radius: 10px;
+      padding: 16px 18px;
+      border: 1px solid #e2e8f0;
+      margin-bottom: 16px;
+    }
+    .full-day h4 {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #94a3b8;
+      margin-bottom: 10px;
+    }
+    .full-day ul { list-style: none; }
+    .full-day ul li {
+      font-size: 13px;
+      color: #334155;
+      padding: 4px 0;
+      border-bottom: 1px solid #f1f5f9;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+    .full-day ul li:last-child { border-bottom: none; }
+    .full-day ul li::before { content: '→'; color: #94a3b8; flex-shrink: 0; font-size: 12px; margin-top: 2px; }
+
+    /* goal box */
+    .goal {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: #f0fdf4;
+      border-left: 3px solid #22c55e;
+      border-radius: 6px;
+      padding: 12px 16px;
+      font-size: 13px;
+      color: #166534;
+    }
+    .goal strong { color: #15803d; margin-right: 4px; }
+
+    /* links */
+    .link-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #f1f5f9;
+      border-radius: 20px;
+      padding: 3px 12px;
+      font-size: 12px;
+      color: #3b82f6;
+      text-decoration: none;
+      font-weight: 500;
+      margin-right: 6px;
+      margin-top: 8px;
+    }
+    .link-chip:hover { background: #dbeafe; }
+    .links-row { margin-top: 6px; }
+
+    /* update section */
+    .update-section {
+      background: #fff;
+      border-radius: 12px;
+      padding: 32px 36px;
+      margin-bottom: 28px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+    .update-section h2 { font-size: 18px; font-weight: 700; color: #0f172a; margin-bottom: 4px; }
+    .update-section .sub { font-size: 13px; color: #94a3b8; margin-bottom: 24px; }
+
+    .update-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      margin-bottom: 14px;
+      overflow: hidden;
+    }
+    .update-card:last-child { margin-bottom: 0; }
+    .update-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      background: #f8fafc;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .update-tag {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .t1 { background: #ede9fe; color: #7c3aed; }
+    .t2 { background: #dbeafe; color: #1d4ed8; }
+    .t3 { background: #dcfce7; color: #15803d; }
+    .t4 { background: #ffedd5; color: #c2410c; }
+    .update-card-header span { font-size: 13px; color: #64748b; }
+    .update-message {
+      padding: 16px 20px;
+      font-size: 14px;
+      color: #334155;
+      font-style: italic;
+      line-height: 1.8;
+      border-left: 3px solid #e2e8f0;
+      margin: 14px 20px;
+      border-radius: 2px;
+      background: #fafafa;
+    }
+    .m1 { border-left-color: #7c3aed; }
+    .m2 { border-left-color: #3b82f6; }
+    .m3 { border-left-color: #22c55e; }
+    .m4 { border-left-color: #fb923c; }
+
+    footer {
+      text-align: center;
+      padding: 32px 20px;
+      font-size: 13px;
+      color: #94a3b8;
+    }
+
+    @media (max-width: 640px) {
+      .hero { padding: 32px 20px; }
+      .container { padding: 20px 16px; }
+      .day-body { padding: 20px; }
+      .half-days { grid-template-columns: 1fr; }
+      .strip-days { grid-template-columns: repeat(5, 1fr); }
+      .hero h1 { font-size: 22px; }
+      .update-section { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="label">Compressed Study Plan</div>
+  <h1>Fine-Tuning DistilBERT — 10 Days</h1>
+  <p>Full-day intensive plan to go from foundations to a working fine-tuned classifier integrated into the BPCL pipeline.</p>
+  <div class="constraints">
+    <div class="pill">⏱ 1.5 weeks timeline</div>
+    <div class="pill">🕗 Full day commitment</div>
+    <div class="pill">🎯 Production-ready by Day 10</div>
+  </div>
+  <div class="meta" style="margin-top:20px;">
+    <span><strong>Prepared for:</strong> Chiranjiv</span>
+    <span><strong>Target:</strong> DistilBERT SFT pipeline ready for BPCL data</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- day strip -->
+  <div class="timeline-strip">
+    <h3>10-Day Overview</h3>
+    <div class="strip-days">
+      <div class="strip-day"><div class="strip-dot s1">1</div><div class="strip-label">Theory</div></div>
+      <div class="strip-day"><div class="strip-dot s2">2</div><div class="strip-label">HF Setup</div></div>
+      <div class="strip-day"><div class="strip-dot s3">3</div><div class="strip-label">Trainer</div></div>
+      <div class="strip-day"><div class="strip-dot s4">4</div><div class="strip-label">Train PoC</div></div>
+      <div class="strip-day"><div class="strip-dot s5">5</div><div class="strip-label">Integrate</div></div>
+      <div class="strip-day"><div class="strip-dot s6">6</div><div class="strip-label">Synth Data</div></div>
+      <div class="strip-day"><div class="strip-dot s7">7</div><div class="strip-label">Full Run</div></div>
+      <div class="strip-day"><div class="strip-dot s8">8</div><div class="strip-label">Polish</div></div>
+      <div class="strip-day"><div class="strip-dot s9">9</div><div class="strip-label">Tests</div></div>
+      <div class="strip-day"><div class="strip-dot s10">10</div><div class="strip-label">Demo</div></div>
+    </div>
+  </div>
+
+  <!-- DAY 1 -->
+  <div class="day-card">
+    <div class="day-header">
+      <div class="day-num d1">1</div>
+      <div class="day-header-text">
+        <h2>Foundations — Theory Only</h2>
+        <p>Build the mental model. No code today.</p>
+      </div>
+    </div>
+    <div class="day-body">
+      <div class="half-days">
+        <div class="half">
+          <h4>Morning</h4>
+          <ul>
+            <li>Neural networks — what they are, how they learn</li>
+            <li>Loss functions, backpropagation, gradient descent</li>
+            <li>Pre-training vs fine-tuning</li>
+          </ul>
+          <div class="links-row">
+            <a class="link-chip" href="https://www.youtube.com/watch?v=aircAruvnKk" target="_blank">▶ 3B1B — Ch.1</a>
+            <a class="link-chip" href="https://www.youtube.com/watch?v=IHZwWFHWa-w" target="_blank">▶ 3B1B — Ch.2</a>
+            <a class="link-chip" href="https://www.youtube.com/watch?v=Ilg3gGewQ5U" target="_blank">▶ 3B1B — Ch.3</a>
+          </div>
+        </div>
+        <div class="half">
+          <h4>Afternoon</h4>
+          <ul>
+            <li>Transformer architecture and attention mechanism</li>
+            <li>BERT — bidirectional reading, classification head</li>
+            <li>DistilBERT — why smaller is fine for classification</li>
+          </ul>
+          <div class="links-row">
+            <a class="link-chip" href="https://jalammar.github.io/illustrated-transformer/" target="_blank">📖 Illustrated Transformer</a>
+            <a class="link-chip" href="https://jalammar.github.io/illustrated-bert/" target="_blank">📖 Illustrated BERT</a>
+            <a class="link-chip" href="https://medium.com/huggingface/distilbert-8cf3380435b5" target="_blank">📖 DistilBERT Blog</a>
+          </div>
+        </div>
+      </div>
+      <div class="goal"><strong>Day 1 Goal:</strong> Able to explain why DistilBERT is better than Gemma for classification, what fine-tuning means, and what a classification head is.</div>
+    </div>
+  </div>
+
+  <!-- DAY 2 -->
+  <div class="day-card">
+    <div class="day-header">
+      <div class="day-num d2">2</div>
+      <div class="day-header-text">
+        <h2>HuggingFace Setup + Hands-On</h2>
+        <p>Install the tools, load a real model, run inference locally.</p>
+      </div>
+    </div>
+    <div class="day-body">
+      <div class="half-days">
+        <div class="half">
+          <h4>Morning</h4>
+          <ul>
+            <li>HuggingFace NLP Course — Chapter 1 (Transformer overview)</li>
+            <li>HuggingFace NLP Course — Chapter 2 (Using transformers, tokenization)</li>
+          </ul>
+          <div class="links-row">
+            <a class="link-chip" href="https://huggingface.co/learn/nlp-course/chapter1/1" target="_blank">📖 HF Course Ch.1</a>
+            <a class="link-chip" href="https://huggingface.co/learn/nlp-course/chapter2/1" target="_blank">📖 HF Course Ch.2</a>
+          </div>
+        </div>
+        <div class="half">
+          <h4>Afternoon</h4>
+          <ul>
+            <li>Install: <code>transformers datasets torch scikit-learn</code></li>
+            <li>Load DistilBERT locally — verify it runs offline</li>
+            <li>Tokenize a sample sentence — inspect input IDs and attention masks</li>
+            <li>Run a forward pass — read raw model output</li>
+          </ul>
+          <div class="links-row">
+            <a class="link-chip" href="https://huggingface.co/distilbert-base-uncased" target="_blank">🤗 distilbert-base-uncased</a>
+          </div>
+        </div>
+      </div>
+      <div class="goal"><strong>Day 2 Goal:</strong> DistilBERT downloaded and running on your machine with no internet. You can tokenize text and read model output.</div>
+    </div>
+  </div>
+
+  <!-- DAY 3 -->
+  <div class="day-card">
+    <div class="day-header">
+      <div class="day-num d3">3</div>
+      <div class="day-header-text">
+        <h2>Trainer API — Fine-Tuning Theory + Setup</h2>
+        <p>Understand how fine-tuning works in HuggingFace before running it.</p>
+      </div>
+    </div>
+    <div class="day-body">
+      <div class="half-days">
+        <div class="half">
+          <h4>Morning</h4>
+          <ul>
+            <li>HuggingFace NLP Course — Chapter 3 (Fine-tuning with Trainer)</li>
+            <li>TrainingArguments — epochs, batch size, learning rate, evaluation strategy</li>
+            <li>How the Trainer API manages the training loop</li>
+          </ul>
+          <div class="links-row">
+            <a class="link-chip" href="https://huggingface.co/learn/nlp-course/chapter3/1" target="_blank">📖 HF Course Ch.3</a>
+            <a class="link-chip" href="https://huggingface.co/docs/transformers/training" target="_blank">📖 Fine-Tuning Guide</a>
+          </div>
+        </div>
+        <div class="half">
+          <h4>Afternoon</h4>
+          <ul>
+            <li>Load AG News dataset via HuggingFace Datasets</li>
+            <li>Apply tokenizer to dataset (batched tokenization)</li>
+            <li>Set up <code>DistilBertForSequenceClassification</code> with correct number of labels</li>
+            <li>Prepare everything for training — verify no errors</li>
+          </ul>
+          <div class="links-row">
+            <a class="link-chip" href="https://huggingface.co/datasets/ag_news" target="_blank">🤗 AG News Dataset</a>
+          </div>
+        </div>
+      </div>
+      <div class="goal"><strong>Day 3 Goal:</strong> Dataset loaded and tokenized, model initialised, TrainingArguments configured. Ready to hit train.</div>
+    </div>
+  </div>
+
+  <!-- DAY 4 -->
+  <div class="day-card">
+    <div class="day-header">
+      <div class="day-num d4">4</div>
+      <div class="day-header-text">
+        <h2>Train, Evaluate & Iterate</h2>
+        <p>Run the full fine-tuning cycle. Evaluate results. Build intuition.</p>
+      </div>
+    </div>
+    <div class="day-body">
+      <div class="half-days">
+        <div class="half">
+          <h4>Morning</h4>
+          <ul>
+            <li>Run <code>trainer.train()</code> — watch loss decrease across epochs</li>
+            <li>Save the fine-tuned model to disk</li>
+            <li>Load it back and run inference on new text</li>
+          </ul>
+          <div class="links-row">
+            <a class="link-chip" href="https://huggingface.co/docs/evaluate" target="_blank">📖 HuggingFace Evaluate</a>
+          </div>
+        </div>
+        <div class="half">
+          <h4>Afternoon</h4>
+          <ul>
+            <li>Compute accuracy and per-class F1 score on test set</li>
+            <li>Generate confusion matrix — identify which categories the model confuses</li>
+            <li>Tweak one hyperparameter (e.g. learning rate), retrain, compare results</li>
+          </ul>
+        </div>
+      </div>
+      <div class="goal"><strong>Day 4 Goal:</strong> Fine-tuned model saved locally. You have accuracy + F1 scores. You understand what affects model quality.</div>
+    </div>
+  </div>
+
+  <!-- DAY 5 -->
+  <div class="day-card">
+    <div class="day-header">
+      <div class="day-num d5">5</div>
+      <div class="day-header-text">
+        <h2>Integrate into the BPCL Project</h2>
+        <p>Wire the fine-tuned classifier into the existing pipeline.</p>
+      </div>
+    </div>
+    <div class="day-body">
+      <div class="half-days">
+        <div class="half">
+          <h4>Morning</h4>
+          <ul>
+            <li>Write <code>services/classifier_finetuned.py</code> implementing the <code>Classifier</code> Protocol</li>
+            <li>Load saved model at startup, run <code>classify()</code> via the model</li>
+            <li>Wire up in <code>core/deps.py</code> — add <code>CLASSIFIER_BACKEND=distilbert</code> env var</li>
+          </ul>
+        </div>
+        <div class="half">
+          <h4>Afternoon</h4>
+          <ul>
+            <li>Write <code>scripts/train.py</code> — standalone training script (input: labeled CSV, output: saved model)</li>
+            <li>Test <code>POST /classify</code> end-to-end with DistilBERT backend active</li>
+            <li>Verify response format matches existing schema</li>
+          </ul>
+        </div>
+      </div>
+      <div class="goal"><strong>Day 5 Goal:</strong> DistilBERT classifier live in the pipeline. Switchable via one env var. Training script ready.</div>
+    </div>
+  </div>
+
+  <!-- DAYS 6-7 -->
+  <div class="day-card">
+    <div class="day-header">
+      <div class="day-num d67">6–7</div>
+      <div class="day-header-text">
+        <h2>Synthetic Data PoC — Full Pipeline Run</h2>
+        <p>Simulate the real BPCL workflow end-to-end with synthetic documents.</p>
+      </div>
+    </div>
+    <div class="day-body">
+      <div class="full-day">
+        <h4>Day 6 — Generate Synthetic Labeled Data</h4>
+        <ul>
+          <li>Generate ~50 synthetic labeled documents (10 per placeholder category)</li>
+          <li>Save as a labeled CSV: <code>text, label</code></li>
+          <li>Review label distribution — ensure categories are balanced</li>
+        </ul>
+      </div>
+      <div class="full-day">
+        <h4>Day 7 — Full Pipeline: Label → Train → Classify</h4>
+        <ul>
+          <li>Run <code>scripts/train.py</code> on the synthetic CSV</li>
+          <li>Load the trained model via the DistilBERT classifier</li>
+          <li>Send real document uploads to <code>POST /classify</code> — verify correct categories returned</li>
+          <li>Fix any issues in the pipeline</li>
+        </ul>
+      </div>
+      <div class="goal"><strong>Days 6–7 Goal:</strong> Complete dry run of the production workflow — collect data → train → classify. Same steps will be followed with real BPCL documents.</div>
+    </div>
+  </div>
+
+  <!-- DAYS 8-10 -->
+  <div class="day-card">
+    <div class="day-header">
+      <div class="day-num d810">8–10</div>
+      <div class="day-header-text">
+        <h2>Polish, Tests & Demo Prep</h2>
+        <p>Clean up, write tests, prepare to demonstrate to stakeholders.</p>
+      </div>
+    </div>
+    <div class="day-body">
+      <div class="full-day">
+        <h4>Day 8 — Code Quality</h4>
+        <ul>
+          <li>Clean up <code>classifier_finetuned.py</code> and <code>scripts/train.py</code></li>
+          <li>Add proper error handling (model not found, invalid input)</li>
+          <li>Document the training script — inputs, outputs, how to run</li>
+        </ul>
+      </div>
+      <div class="full-day">
+        <h4>Day 9 — Tests</h4>
+        <ul>
+          <li>Write unit tests for <code>DistilBERTClassifier</code> (mock model, test interface)</li>
+          <li>Write integration test for <code>POST /classify</code> with DistilBERT backend</li>
+          <li>Run full test suite — ensure nothing broken</li>
+        </ul>
+      </div>
+      <div class="full-day">
+        <h4>Day 10 — Demo Ready</h4>
+        <ul>
+          <li>Run the complete flow one final time: train → classify via API → frontend shows result</li>
+          <li>Confirm model runs fully offline — no internet, no Ollama, no cloud</li>
+          <li>Prepare to demonstrate: upload a document, show classification result, show it is DistilBERT not Gemma</li>
+        </ul>
+      </div>
+      <div class="goal"><strong>Days 8–10 Goal:</strong> Production-ready pipeline. Full test coverage. Ready to demonstrate and ready to train on real BPCL data the moment the category list arrives.</div>
+    </div>
+  </div>
+
+  <!-- PROGRESS UPDATES -->
+  <div class="update-section">
+    <h2>Progress Updates</h2>
+    <div class="sub">What to communicate when asked for a status update</div>
+
+    <div class="update-card">
+      <div class="update-card-header">
+        <span class="update-tag t1">After Day 1</span>
+        <span>Foundations complete</span>
+      </div>
+      <div class="update-message m1">
+        "Completed the architectural and theoretical research. I have a clear understanding of why BERT-based models are the correct approach for document classification over generative LLMs — BERT reads the full document bidirectionally and maps it directly to a category, whereas Gemma generates text and is non-deterministic. Starting hands-on implementation tomorrow."
+      </div>
+    </div>
+
+    <div class="update-card">
+      <div class="update-card-header">
+        <span class="update-tag t2">After Day 3</span>
+        <span>Environment ready, training pipeline set up</span>
+      </div>
+      <div class="update-message m2">
+        "DistilBERT is running locally — fully offline, no cloud dependency. The HuggingFace training environment is set up and the fine-tuning pipeline is configured. Running the first training cycle tomorrow."
+      </div>
+    </div>
+
+    <div class="update-card">
+      <div class="update-card-header">
+        <span class="update-tag t3">After Day 5</span>
+        <span>Fine-tuning pipeline integrated into project</span>
+      </div>
+      <div class="update-message m3">
+        "Completed a full fine-tuning cycle on a sample dataset — model trained, evaluated, and saved locally. The DistilBERT classifier is now integrated into the BPCL Document Classifier pipeline and can be activated via a single configuration change. A training script is ready that takes a labeled dataset as input and produces a trained model. We are ready to train on real BPCL documents as soon as the confirmed document category list is available."
+      </div>
+    </div>
+
+    <div class="update-card">
+      <div class="update-card-header">
+        <span class="update-tag t4">After Day 10</span>
+        <span>Production ready</span>
+      </div>
+      <div class="update-message m4">
+        "The v2 fine-tuning pipeline is complete and production-ready. End-to-end tested: document upload → DistilBERT classification → result returned via API, fully self-hosted with no external dependencies. Test coverage is in place. The system is ready — the only remaining step is collecting and labeling real BPCL documents once the document category list is confirmed."
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<footer>
+  BPCL Document Classifier AI &mdash; Compressed Fine-Tuning Plan &mdash; May 2026
+</footer>
+
+</body>
+</html>
