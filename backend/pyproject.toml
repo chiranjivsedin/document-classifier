@@ -10,6 +10,8 @@ dependencies = [
     "pymupdf>=1.27.2.3",
     "python-multipart>=0.0.27",
     "rapidocr-onnxruntime>=1.4.4",
+    "torch>=2.12.0",
+    "transformers>=5.9.0",
     "uvicorn[standard]>=0.46.0",
 ]
 
