@@ -3,7 +3,7 @@ Day 2 — DistilBERT Hands-On Exploration
 Run each section one at a time. Read the output and understand what it means.
 """
 
-from transformers import DistilBertTokenizer, DistilBertForSequenceClassification
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import torch
 
 # ── STEP 1: Load tokenizer and model ──────────────────────────────────────────
@@ -13,8 +13,10 @@ print("=" * 60)
 print("STEP 1: Loading tokenizer and model")
 print("=" * 60)
 
-tokenizer = DistilBertTokenizer.from_pretrained("distilbert-base-uncased")
-model = DistilBertForSequenceClassification.from_pretrained("distilbert-base-uncased")
+MODEL_NAME = "distilbert-base-uncased"
+
+tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+model = AutoModelForSequenceClassification.from_pretrained(MODEL_NAME)
 
 print("✓ Tokenizer loaded")
 print("✓ Model loaded")
