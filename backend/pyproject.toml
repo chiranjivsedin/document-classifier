@@ -4,12 +4,15 @@ version = "0.1.0"
 description = "Document classification and extraction service (OCR + detection + extraction + classification pipeline)."
 requires-python = ">=3.12,<3.13"
 dependencies = [
+    "accelerate>=1.13.0",
+    "datasets>=4.8.5",
     "fastapi>=0.136.1",
     "ollama>=0.6.1",
     "pydantic-settings>=2.14.0",
     "pymupdf>=1.27.2.3",
     "python-multipart>=0.0.27",
     "rapidocr-onnxruntime>=1.4.4",
+    "scikit-learn>=1.8.0",
     "torch>=2.12.0",
     "transformers>=5.9.0",
     "uvicorn[standard]>=0.46.0",
