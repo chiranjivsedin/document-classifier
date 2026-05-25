@@ -1,33 +1,71 @@
+from datasets import load_dataset
 from transformers import pipeline
-
-label_map = {
-    "LABEL_0": "World",
-    "LABEL_1": "Sports",
-    "LABEL_2": "Business",
-    "LABEL_3": "Technology"
-}
 
 classifier = pipeline(
     "text-classification",
     model="./results/final_model"
 )
 
-texts = [
-    "Apple launches a new AI processor for smartphones",
-    "India wins the cricket world cup series",
-    "Stock market rises after investor confidence improves"
-]
+# Verify model knows its own labels
+print("Model labels:")
+print(classifier.model.config.id2label)
 
-for text in texts:
-    result = classifier(text)[0]
+dataset = load_dataset("ag_news")
 
-    predicted = label_map[result["label"]]
+print(f"Dateset: {dataset}")
+print("\n--- Predictions on AG News test set ---")
 
-    print("\nText:")
-    print(text)
+for i in range(10):
+    text = dataset["test"][i]["text"]
 
-    print("\nPredicted category:")
-    print(predicted)
+    actual = classifier.model.config.id2label[
+        dataset["test"][i]["label"]
+    ]
 
-    print("Confidence:")
-    print(round(result["score"] * 100,2), "%")
+    pred = classifier(text)[0]
+
+    match = "✓" if pred["label"] == actual else "✗"
+
+    print(f"\n{match} Text: {text[:80]}...")
+    print(f"Actual: {actual}")
+    print(
+        f"Predicted: {pred['label']} "
+        f"({round(pred['score']*100,1)}%)"
+    )
+
+
+# from datasets import load_dataset
+# from transformers import pipeline
+
+# classifier = pipeline(
+#     "text-classification",
+#     model="./results/final_model"
+# )
+
+# dataset = load_dataset("ag_news")
+
+# print("Model labels:")
+# print(classifier.model.config.id2label)
+
+# # One example from each category
+# examples = [
+#     ("India wins cricket world cup final", "Sports"),
+#     ("Stock market rises after strong investor confidence", "Business"),
+#     ("UN discusses global climate policy", "World"),
+#     ("Apple launches new AI processor", "Technology")
+# ]
+
+# print("\n--- Manual category testing ---")
+
+# for text, actual in examples:
+
+#     pred = classifier(text)[0]
+
+#     match = "✓" if pred["label"] == actual else "✗"
+
+#     print(f"\n{match} Text: {text}")
+#     print(f"Actual: {actual}")
+#     print(
+#         f"Predicted: {pred['label']} "
+#         f"({round(pred['score']*100,1)}%)"
+#     )
