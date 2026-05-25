@@ -33,10 +33,10 @@ htmlcov/
 .claude/settings.local.json
 
 # ---------- ML / data artifacts ----------
-# Uncomment / extend once weights and sample docs land.
-# *.pt
-# *.onnx
-# *.bin
+backend/results/
+*.pt
+*.onnx
+*.bin
 # data/raw/
 # data/samples/
 
